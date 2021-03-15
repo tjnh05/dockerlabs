@@ -241,15 +241,31 @@ $ sudo mv ~/ca.pem ~/kubernetes.pem ~/kubernetes-key.pem /etc/etcd
 ```
 4- Download the etcd binaries.
 ```
-wget https://github.com/etcd-io/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
+#wget https://github.com/etcd-io/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
+
+ETCD_VER=v3.4.15
+
+# choose either URL
+GOOGLE_URL=https://storage.googleapis.com/etcd
+GITHUB_URL=https://github.com/etcd-io/etcd/releases/download
+DOWNLOAD_URL=${GOOGLE_URL}
+
+rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+rm -rf /tmp/etcd-download-test && mkdir -p /tmp/etcd-download-test
+
+curl -L ${DOWNLOAD_URL}/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+#tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd-download-test --strip-components=1
+#rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
 ```
 5- Extract the etcd archive.
 ```
-$ tar xvzf etcd-v3.3.13-linux-amd64.tar.gz
+#$ tar xvzf etcd-v3.3.13-linux-amd64.tar.gz
+$ tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd-download-test --strip-components=1
 ```
 6- Move the etcd binaries to /usr/local/bin.
 ```
-$ sudo mv etcd-v3.3.13-linux-amd64/etcd* /usr/local/bin/
+#$ sudo mv etcd-v3.3.13-linux-amd64/etcd* /usr/local/bin/
+sudo mv /tmp/etcd-download-test/etcd* /usr/local/bin/
 ```
 7- Create an etcd systemd unit file.
 ```
