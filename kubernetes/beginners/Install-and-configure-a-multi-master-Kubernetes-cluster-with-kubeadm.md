@@ -45,7 +45,8 @@ $ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 #### Installing kubectl
 1- Download the binary.
 ```
-$wget https://storage.googleapis.com/kubernetes-release/release/v1.15.0/bin/linux/amd64/kubectl
+# $wget https://storage.googleapis.com/kubernetes-release/release/v1.15.0/bin/linux/amd64/kubectl
+$curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 ```
 2- Add the execution permission to the binary.
 ```
