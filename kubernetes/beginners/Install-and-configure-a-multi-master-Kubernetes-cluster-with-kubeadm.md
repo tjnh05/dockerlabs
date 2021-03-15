@@ -405,7 +405,9 @@ apiServerExtraArgs:
   4 - Create the configuration file for kubeadm.
   ```
   $ vim config.yaml
-apiVersion: kubeadm.k8s.io/v1alpha3
+#https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-config/
+#apiVersion: kubeadm.k8s.io/v1alpha3
+apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
 kubernetesVersion: stable
 apiServerCertSANs:
