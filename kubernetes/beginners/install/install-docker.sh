@@ -34,4 +34,4 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-sudo usermod -aG docker $USER && newgrp docker
+#sudo usermod -aG docker $USER && newgrp docker
