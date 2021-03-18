@@ -1,18 +1,19 @@
 # Install Docker CE
 ## Set up the repository:
 ### Install packages to allow apt to use a repository over HTTPS
-apt-get update && apt-get install apt-transport-https ca-certificates curl software-properties-common
+sudo apt-get update && sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
 ### Add Docker’s official GPG key
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 ### Add Docker apt repository.
-add-apt-repository \
+sudo add-apt-repository \
   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) \
   stable"
 ## Install Docker CE.
-apt-get update && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu
+#apt-get update && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu
+sudo apt-get update && sudo apt-get install docker-ce
 # Setup daemon.
-cat > /etc/docker/daemon.json <<EOF
+cat <<EOF | sudo tee /etc/docker/daemon.json
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
@@ -22,7 +23,15 @@ cat > /etc/docker/daemon.json <<EOF
   "storage-driver": "overlay2"
 }
 EOF
-mkdir -p /etc/systemd/system/docker.service.d
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+cat <<EOF | sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf
+[Service]
+    Environment="HTTP_PROXY=http://172.16.2.15:8080/" "HTTPS_PROXY=http://172.16.2.15:8080/" "NO_PROXY=localhost,127.0.0.0/24,10.0.0.0/8,10.0.0.0/8,192.168.0.0/16,172.0.0.0/8,.deloittecloud.com"
+EOF
+
 # Restart docker.
-systemctl daemon-reload
-systemctl restart docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+sudo usermod -aG docker $USER && newgrp docker
