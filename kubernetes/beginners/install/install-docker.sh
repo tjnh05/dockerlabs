@@ -23,8 +23,8 @@ cat <<EOF | sudo tee /etc/docker/daemon.json
   "storage-driver": "overlay2"
 }
 EOF
-sudo mkdir -p /etc/systemd/system/docker.service.d
 
+sudo mkdir -p /etc/systemd/system/docker.service.d
 cat <<EOF | sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf
 [Service]
     Environment="HTTP_PROXY=http://172.16.2.15:8080/" "HTTPS_PROXY=http://172.16.2.15:8080/" "NO_PROXY=localhost,127.0.0.0/24,10.0.0.0/8,10.0.0.0/8,192.168.0.0/16,172.0.0.0/8,.deloittecloud.com"
