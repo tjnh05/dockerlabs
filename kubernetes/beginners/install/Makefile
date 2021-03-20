@@ -93,6 +93,7 @@ admin:
 
 calico:
 	curl -LO https://docs.projectcalico.org/manifests/calico.yaml
+network:
 	sudo kubectl apply -f calico.yaml
 
 cleanup:
