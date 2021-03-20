@@ -80,3 +80,8 @@ kube:
 calicoctl:
 	sudo curl -LO  https://github.com/projectcalico/calicoctl/releases/download/v3.18.1/calicoctl
 	sudo install -o root -g root -m 0755 calicoctl /usr/local/bin/calicoctl
+
+cleanup:
+	sudo kubeadm reset reset cleanup-node
+	sudo rm -rf /etc/cni/net.d
+	sudo iptables -F
