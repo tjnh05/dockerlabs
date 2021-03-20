@@ -45,7 +45,6 @@ prepare:
 	@echo -n "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 	@echo
 docker:
-	@sh -x install-docker.sh
 	# Install Docker CE
 	## Set up the repository:
 	### Install packages to allow apt to use a repository over HTTPS
@@ -57,7 +56,7 @@ docker:
 	### Add Docker apt repository.
 	sudo add-apt-repository \
   		"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-  		$(lsb_release -cs) \
+  		$$(lsb_release -cs) \
   		stable"
 	## Install Docker CE.
 	#apt-get update && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu
@@ -69,7 +68,7 @@ docker:
 	# Restart docker.
 	sudo systemctl daemon-reload
 	sudo systemctl restart docker
-	sudo usermod -aG docker $USER 
+	sudo usermod -aG docker $$USER 
 	sudo newgrp docker
 
 
@@ -84,17 +83,18 @@ calicoctl:
 	sudo curl -LO  https://github.com/projectcalico/calicoctl/releases/download/v3.18.1/calicoctl
 	sudo install -o root -g root -m 0755 calicoctl /usr/local/bin/calicoctl
 
-kubeinit:
+init:
 	sudo kubeadm init --pod-network-cidr=$(POD_NETWORK_CIDR)
-	mkdir -p $HOME/.kube
-	sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-	sudo chown $(id -u):$(id -g) $HOME/.kube/config
+	mkdir -p $$HOME/.kube
+	sudo cp -i /etc/kubernetes/admin.conf $$HOME/.kube/config
+	sudo chown $$(id -u):$$(id -g) $$HOME/.kube/config
 
 calico:
 	curl -LO https://docs.projectcalico.org/manifests/calico.yaml
 	sudo kubectl apply -f calico.yaml
 
 cleanup:
-	sudo kubeadm reset reset cleanup-node
+	sudo kubeadm reset cleanup-node
+	/bin/rm -rf $$HOME/.kube
 	sudo rm -rf /etc/cni/net.d
 	sudo iptables -F
