@@ -32,6 +32,8 @@ net.bridge.bridge-nf-call-iptables = 1
 endef
 export K8SCONF
 
+POD_NETWORK_CIDR=172.35.0.0/16
+
 
 prepare:
 	sudo apt-get update
@@ -80,6 +82,15 @@ kube:
 calicoctl:
 	sudo curl -LO  https://github.com/projectcalico/calicoctl/releases/download/v3.18.1/calicoctl
 	sudo install -o root -g root -m 0755 calicoctl /usr/local/bin/calicoctl
+
+kubeinit:
+	sudo kubeadm init --pod-network-cidr=$(POD_NETWORK_CIDR)
+	mkdir -p $HOME/.kube
+	sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+	sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+calico:
+	sudo kubectl apply -f calico.yaml
 
 cleanup:
 	sudo kubeadm reset reset cleanup-node
