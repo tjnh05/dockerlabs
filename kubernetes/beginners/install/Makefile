@@ -34,7 +34,6 @@ export K8SCONF
 
 
 prepare:
-	i
 	sudo apt-get update
 	sudo apt-get install -y apt-transport-https curl
 	sudo apt-get install -y net-tools tcpdump nmap sysstat
