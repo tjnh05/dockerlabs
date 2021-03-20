@@ -32,6 +32,7 @@ net.bridge.bridge-nf-call-iptables = 1
 endef
 export K8SCONF
 
+
 POD_NETWORK_CIDR=172.35.0.0/16
 
 
@@ -90,6 +91,7 @@ kubeinit:
 	sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 calico:
+	curl -LO https://docs.projectcalico.org/manifests/calico.yaml
 	sudo kubectl apply -f calico.yaml
 
 cleanup:
