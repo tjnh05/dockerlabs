@@ -101,6 +101,9 @@ calico:
 # perform on master node after calico.yaml has been downloaded and edited.
 network:
 	sudo kubectl apply -f calico.yaml
+#
+disable:
+	kubectl set env daemonset/calico-node FELIX_USAGEREPORTINGENABLED=false -n kube-system
 
 # cleanup k8s environment from local node
 cleanup:
