@@ -69,7 +69,7 @@ docker:
 	sudo systemctl daemon-reload
 	sudo systemctl restart docker
 	sudo usermod -aG docker $$USER 
-	sudo newgrp docker
+	#sudo newgrp docker
 
 
 kube:
