@@ -85,6 +85,8 @@ calicoctl:
 
 init:
 	sudo kubeadm init --pod-network-cidr=$(POD_NETWORK_CIDR)
+
+admin:	
 	mkdir -p $$HOME/.kube
 	sudo cp -i /etc/kubernetes/admin.conf $$HOME/.kube/config
 	sudo chown $$(id -u):$$(id -g) $$HOME/.kube/config
