@@ -34,6 +34,7 @@ export K8SCONF
 
 
 POD_NETWORK_CIDR=172.35.0.0/16
+NTPSERV=10.13.32.10
 
 # prepare software repositories and some tools
 prepare:
@@ -44,6 +45,12 @@ prepare:
 	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 	@echo -n "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 	@echo
+
+# NTP
+ntp:
+	sudo sed -i 's/^#NTP=.*$$/NTP=$(NTPSERV)/' /etc/systemd/timesyncd.conf
+	sudo systemctl restart systemd-timesyncd 
+	sudo systemctl enable systemd-timesyncd 
 
 # install docker-ce and config environment
 docker:
