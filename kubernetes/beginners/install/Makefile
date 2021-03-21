@@ -51,6 +51,8 @@ ntp:
 	sudo sed -i 's/^#NTP=.*$$/NTP=$(NTPSERV)/' /etc/systemd/timesyncd.conf
 	sudo systemctl restart systemd-timesyncd 
 	sudo systemctl enable systemd-timesyncd 
+	#sudo /sbin/hwclock --systohc --localtime
+	timedatectl timesync-status
 
 # install docker-ce and config environment
 docker:
