@@ -101,9 +101,17 @@ calico:
 # perform on master node after calico.yaml has been downloaded and edited.
 network:
 	sudo kubectl apply -f calico.yaml
-#
+# disable felix usage report
 disable:
 	kubectl set env daemonset/calico-node FELIX_USAGEREPORTINGENABLED=false -n kube-system
+
+
+
+# deploy nginx for test
+test:
+	kubectl apply -f https://k8s.io/examples/application/deployment.yaml
+	kubectl apply -f svc-nginx.yaml
+	@echo "Please visist URL to access nginx service: http://$$(hostname -i):$$(kubectl get svc svc-nginx -o=jsonpath='{.spec.ports[0].nodePort}')"
 
 # cleanup k8s environment from local node
 cleanup:
